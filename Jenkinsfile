@@ -16,11 +16,11 @@ node('maven') {
   }
   stage('Build Image') {
     unstash name:"jar"
-    sh "oc start-build shopping-cart-app --from-file=target/cart.jar --follow"
+    sh "oc start-build shopping-cart-resr-api --from-file=target/cart.jar --follow"
   }
   stage('Deploy') {
-    openshiftDeploy depCfg: 'cart'
-    openshiftVerifyDeployment depCfg: 'shopping-cart-app', replicaCount: 1, verifyReplicaCount: true
+    openshiftDeploy depCfg: 'shopping-cart-resr-api'
+    openshiftVerifyDeployment depCfg: 'shopping-cart-resr-api', replicaCount: 1, verifyReplicaCount: true
   }
   stage('System Test') {
     sh "curl -s -X POST http://shopping-cart-app:8080/api/cart/dummy/666/1"
